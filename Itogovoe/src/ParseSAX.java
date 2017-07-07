@@ -16,7 +16,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class ParseSAX extends DefaultHandler implements Parser {
 
     public Root parse() {
-        ParseToSax handler = null;
+        ParseSAX handler = null;
         try {
             //Create a "parser factory" for creating SAX parsers
             SAXParserFactory spfac = SAXParserFactory.newInstance();
@@ -25,7 +25,7 @@ public class ParseSAX extends DefaultHandler implements Parser {
             SAXParser sp = spfac.newSAXParser();
 
             //Create an instance of this class; it defines all the handler methods
-            handler = new ParseToSax();
+            handler = new ParseSAX();
 
             //Finally, tell the parser to parse the input and notify the handler
             sp.parse("student.xml", handler);
@@ -106,7 +106,7 @@ public class ParseSAX extends DefaultHandler implements Parser {
             try {
                 date = s.parse(new String(ch, start, length));
             } catch (ParseException ex) {
-                Logger.getLogger(ParseToSax.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ParseSAX.class.getName()).log(Level.SEVERE, null, ex);
             }
               students.setDateOfBirth(date);
             count++;

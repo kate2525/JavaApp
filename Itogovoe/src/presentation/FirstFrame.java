@@ -1,4 +1,8 @@
+package presentation;
 
+
+import presentation.XmlFrame;
+import data.DowlondFromInternet;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
@@ -91,9 +95,10 @@ public class FirstFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-         d.start();
-       // d.dowloandInternetXML();
-        XmlFrame xmlFrame = new XmlFrame(); 
+   
+        d.start();
+        // d.dowloandInternetXML();
+        XmlFrame xmlFrame = new XmlFrame();
         xmlFrame.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 

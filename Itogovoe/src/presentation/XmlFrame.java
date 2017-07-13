@@ -1,4 +1,9 @@
+package presentation;
 
+
+import data.Students;
+import presentation.StudentTableAdapter;
+import domain.Controller;
 import java.awt.LayoutManager;
 import java.beans.VetoableChangeListener;
 import java.io.IOException;
@@ -33,8 +38,7 @@ import org.xml.sax.SAXException;
  */
 public class XmlFrame extends javax.swing.JFrame {
 
-    ArrayList<Students> list = new ArrayList<>();
-    // XmlFrame ob = new XmlFrame();
+    Controller controller = Controller.getInstance();
 
     /**
      * Creates new form SecondFrame
@@ -243,86 +247,28 @@ public class XmlFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        //ParseToSax parsexml = new ParseToSax();
-        Parser parsexml = new ParseSAX();
 
-        try {
-            //ParseToSax handler = parsexml.parseSax();
-            Root handler = parsexml.parse();
-            list = handler.getStudList();
-
-            Adapter adapter = new Adapter(list);
-            jTable1.setModel(adapter);
-
-        } catch (Exception ex) {}
-
-    }//GEN-LAST:event_jButton1ActionPerformed
-    public Root listStudents() {
-
-       // ParseToGson parse = new ParseToGson();
-       Parser parse = new ParseGSON();
-
-       // Root root = parse.perseGson("student.json");
-       Root root = parse.parse();
-
-        list = root.getStudList();
-
-        Adapter adapter = new Adapter(list);
+        ArrayList<Students> list = controller.getParseXML();
+        StudentTableAdapter adapter = new StudentTableAdapter(list);
         jTable1.setModel(adapter);
-
-        return root;
-    }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public void findName() {
 
         System.out.println("поиск по имени:");
         String tekst = jTextField1.getText();
-        ArrayList<Students> listNewName = new ArrayList<>();
-        for (Students student : list) {
-            if (tekst.equals(student.getName())) {
-                System.out.println("Совпадает имя");
-                listNewName.add(student);
-                break;
-            } else {
-                System.out.println("Не совпадает имя");
-            }
-        }
-        Adapter adapter = new Adapter(listNewName);
+        ArrayList<Students> listNewName = controller.getFindbyName(tekst);
+        StudentTableAdapter adapter = new StudentTableAdapter(listNewName);
         jTable3.setModel(adapter);
     }
 
     public void findAge() {
 
         System.out.println("поиск по году:");
-        SimpleDateFormat s = new SimpleDateFormat();
-        s.applyPattern("yyyy-MM-dd");
-        Date date = null;
         String tekst = jTextField1.getText();
-        try {
-            date = s.parse(String.valueOf(tekst));
-            System.out.println("date " + date);
-        } catch (ParseException ex) {
-        }
-
-        ArrayList<Students> listNewName = new ArrayList<>();
-        for (Students student : list) {
-            if (date.equals(student.getDateOfBirth())) {
-                System.out.println("Совпадает год");
-                listNewName.add(student);
-                break;
-            } else {
-                System.out.println("Не совпадает год");
-            }
-        }
-        Adapter adapter = new Adapter(listNewName);
+        ArrayList<Students> listNewName = controller.getFindbyAge(tekst);
+        StudentTableAdapter adapter = new StudentTableAdapter(listNewName);
         jTable3.setModel(adapter);
-    }
-
-    public void srednee() {
-        String tekst = jTextField1.getText();
-        ArrayList<Rating> listRating = new ArrayList<>();
-        for (Rating rating : listRating) {
-        }
     }
 
 
@@ -332,40 +278,29 @@ public class XmlFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-        listStudents();
-//        ParseToGson parse = new ParseToGson();
-//
-//       Root root = parse.perseGson("student.json");
-//       
-//        list = root.getStudList();
-//
-//        Adapter adapter = new Adapter(list);
-//        jTable1.setModel(adapter);
-
-        //System.out.println("root " + root.toString());
-
+        ArrayList<Students> list = controller.getParseGSON();
+        StudentTableAdapter adapter = new StudentTableAdapter(list);
+        jTable1.setModel(adapter);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         //сравним что ввел пользователь по регулярным выражениям
         String tekst = jTextField1.getText();
-       // tekst ="2004-10-25";
+        // tekst ="2004-10-25";
 
         //год рождения     
         Pattern p = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
-         Matcher m = p.matcher(tekst);
-        
-        if(m.matches()){
+        Matcher m = p.matcher(tekst);
+
+        if (m.matches()) {
             System.out.println("поиск по дате2 ");
-//            System.out.println(" tekst3 " +tekst);
             findAge();
-        }else{
+        } else {
             System.out.println("поиск по имени2 ");
             findName();
         }
-        
-        
-        
+
+
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton3InputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jButton3InputMethodTextChanged
@@ -374,30 +309,16 @@ public class XmlFrame extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // сортировка по году
-        Collections.sort(list, new Comparator<Students>() {
-            @Override
-            public int compare(Students t, Students t1) {
-                return t.getDateOfBirth().compareTo(t1.getDateOfBirth());
-            }
-        });
-        Adapter adapter = new Adapter(list);
-        System.out.println("list age " + list.toString());
+        ArrayList<Students> list = controller.getSortedbyAge();
+        StudentTableAdapter adapter = new StudentTableAdapter(list);
         jTable3.setModel(adapter);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // сортировка по имени
-        Collections.sort(list, new Comparator<Students>() {
-            @Override
-            public int compare(Students t, Students t1) {
-                return t.getName().compareTo(t1.getName());
-            }
-        });
-        Adapter adapter = new Adapter(list);
-        System.out.println("list age " + list.toString());
+        ArrayList<Students> list = controller.getSortedbyName();
+        StudentTableAdapter adapter = new StudentTableAdapter(list);
         jTable3.setModel(adapter);
-
-
     }//GEN-LAST:event_jButton5ActionPerformed
 
     /**

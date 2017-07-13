@@ -1,3 +1,6 @@
+package presentation;
+
+import data.Students;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -7,12 +10,12 @@ import java.util.logging.Logger;
 import javax.swing.table.*;
 
 
-public class Adapter extends AbstractTableModel {
+public class StudentTableAdapter extends AbstractTableModel {
     
     ArrayList<Students> list = new ArrayList<>();
   
 
-    public Adapter(ArrayList<Students> list) {
+    public StudentTableAdapter(ArrayList<Students> list) {
         this.list = list;
     }
 

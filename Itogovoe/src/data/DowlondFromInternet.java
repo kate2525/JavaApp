@@ -1,3 +1,5 @@
+package data;
+
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -6,12 +8,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class DowlondFromInternet extends Thread {
-    
+
     private static DowlondFromInternet str = new DowlondFromInternet();
 
     private DowlondFromInternet() {
     }
-    public static DowlondFromInternet getInstance(){
+
+    public static DowlondFromInternet getInstance() {
         System.out.println("создание паттерна синглтон");
         return str;
     }
@@ -26,7 +29,7 @@ public class DowlondFromInternet extends Thread {
         d.dowloandInternetXML();
         d.dowloandInternetJSON();
     }
-  
+
     public void dowloandInternetXML() {
 
         InputStream inputStream = null;
@@ -122,5 +125,6 @@ public class DowlondFromInternet extends Thread {
         }
 
     }
+
 
 }
